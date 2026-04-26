@@ -6,13 +6,16 @@ Each axis runs on its own Arduino Nano. All axes share a single core implementat
 
 ## Axes
 
-| Sketch | Axis | Stages | Speed Adj |
-|--------|------|--------|-----------|
+| Sketch | Axis | Stages | Fine Adj Pins (11/12) |
+|--------|------|--------|------------------------|
 | `examples/Swing` | Boom Swing | 5 | No |
 | `examples/Pan` | Camera Pan | 5 | Yes |
 | `examples/Lift` | Boom Lift | 5 | No |
 | `examples/Tilt` | Camera Tilt | 5 | Yes |
 | `examples/Focus` | Camera Focus | 3 | No |
+
+Note: Focus still supports controller speed stage changes (Square/Circle via Mega commands on pins 8/9).
+The "Fine Adj Pins" column only refers to optional local Nano fine-adjust inputs on pins 11/12.
 
 ## Hardware
 
