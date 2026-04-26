@@ -53,11 +53,22 @@ Click Upload (→). The Nano is now flashed and ready for that axis.
 
 **arduino-cli equivalent:**
 ```sh
-arduino-cli compile --fqbn arduino:avr:nano --library /path/to/MOCO-stepper examples/Swing
-arduino-cli upload -p /dev/cu.usbmodemXXXX --fqbn arduino:avr:nano --library /path/to/MOCO-stepper examples/Swing
+ls /dev/cu.*
+arduino-cli compile --fqbn arduino:avr:nano --library /path/to/MOCO-stepper /path/to/MOCO-stepper/examples/Swing
+arduino-cli upload -v -p /dev/cu.usbserial-XXXX --fqbn arduino:avr:nano /path/to/MOCO-stepper/examples/Swing
 ```
 
-Replace `Swing` with the axis name and `/dev/cu.usbmodemXXXX` with your port.
+Notes:
+- `upload` does not take a `--library` flag; libraries are only needed at compile time.
+- Replace `Swing` with one of: `Swing`, `Pan`, `Lift`, `Tilt`, `Focus`.
+- Replace `/dev/cu.usbserial-XXXX` with your Nano port.
+
+Verified example from this setup:
+
+```sh
+arduino-cli compile --fqbn arduino:avr:nano --library '/Users/micahbreitenstein/Downloads/to Micah/MOCO-stepper' '/Users/micahbreitenstein/Downloads/to Micah/MOCO-stepper/examples/Swing'
+arduino-cli upload -v -p /dev/cu.usbserial-BG02A9YU --fqbn arduino:avr:nano '/Users/micahbreitenstein/Downloads/to Micah/MOCO-stepper/examples/Swing'
+```
 
 ## How It Works
 
