@@ -38,16 +38,45 @@ The "Fine Adj Pins" column only refers to optional local Nano fine-adjust inputs
 
 ### Mega-to-Nano Signal Mapping
 
-The Mega sends motor control signals to each Nano on dedicated pins. Example for Swing axis:
+The Mega sends motor control signals to each Nano on dedicated pins. All Nanos use the same internal pin assignment (6, 7, 8, 9), but receive signals on different Mega pins depending on the axis.
+
+**Swing axis:**
 
 | Mega Pin | Nano Pin | Function |
 |----------|----------|----------|
-| 24 | 7 | Swing Up (jib positive direction) |
-| 25 | 6 | Swing Down (jib negative direction) |
-| 26 | 8 | Speed Stage Up (increase motor speed) |
-| 27 | 9 | Speed Stage Down (decrease motor speed) |
+| 24 | 7 | Up (jib positive) |
+| 25 | 6 | Down (jib negative) |
+| 26 | 8 | Speed Stage Up |
+| 27 | 9 | Speed Stage Down |
 
-Each axis has its own Nano with this pin mapping. Check `MOCO-control/MEGA__master/MEGA__master.ino` for the exact pin assignments per axis.
+**Pan axis:**
+
+| Mega Pin | Nano Pin | Function |
+|----------|----------|----------|
+| 46 | 7 | Left (camera negative) |
+| 48 | 6 | Right (camera positive) |
+| 50 | 8 | Speed Stage Up |
+| 52 | 9 | Speed Stage Down |
+
+**Lift axis:**
+
+| Mega Pin | Nano Pin | Function |
+|----------|----------|----------|
+| 31 | 7 | Up (boom vertical positive) |
+| 30 | 6 | Down (boom vertical negative) |
+| 32 | 8 | Speed Stage Up |
+| 33 | 9 | Speed Stage Down |
+
+**Tilt axis:**
+
+| Mega Pin | Nano Pin | Function |
+|----------|----------|----------|
+| 36 | 7 | Up (camera vertical positive) |
+| 34 | 6 | Down (camera vertical negative) |
+| 38 | 8 | Speed Stage Up |
+| 40 | 9 | Speed Stage Down |
+
+See `MOCO-control/MEGA__master/MEGA__master.ino` for actual pin definitions.
 
 ## Flashing a Nano
 
