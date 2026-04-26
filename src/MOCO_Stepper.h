@@ -58,6 +58,8 @@ int targetDelay  = STAGE_DELAYS[0];
 int currentDelay = STAGE_DELAYS[0];
 bool motionActive          = false;
 bool pendingStop           = false;
+bool ledBlinkState         = false;
+unsigned long lastLedBlinkMs = 0;
 unsigned long lastStepMicros   = 0;
 unsigned long rampUpdateMicros = 0;
 
@@ -202,6 +204,8 @@ void applySpeedAdjust(int adjUpRead, int adjDownRead) {
 void setup() {
   if (AXIS_SERIAL_DEBUG) {
     Serial.begin(57600);
+    delay(500);
+    Serial.println("MOCO BOOT");
   }
   pinMode(driverDIR,    OUTPUT);
   pinMode(driverPUL,    OUTPUT);
@@ -217,7 +221,37 @@ void setup() {
 }
 
 void loop() {
-  bool ledOn = motionActive || (millis() < speedIndicatorUntilMs);
+  // LED: Blink at speed stage rate when motionActive, else off (except for speed indicator pulse)
+  unsigned long nowMs = millis();
+
+  // Debug: print state every 500ms only when motion is active
+  static unsigned long lastDebugMs = 0;
+  if (AXIS_SERIAL_DEBUG && motionActive && nowMs - lastDebugMs > 500) {
+    Serial.print("motionActive: ");
+    Serial.print(motionActive);
+    Serial.print("  ledBlinkState: ");
+    Serial.print(ledBlinkState);
+    Serial.print("  currentDelay(us): ");
+    Serial.println(currentDelay);
+    lastDebugMs = nowMs;
+  }
+  bool ledOn = false;
+  if (motionActive) {
+    // Map speed stage to a human-visible blink rate: slow→fast as stage increases
+    // Stage 0=1000ms, 1=700ms, 2=450ms, 3=250ms, 4=120ms
+    const unsigned long STAGE_BLINK_MS[] = {1000, 700, 450, 250, 120};
+    int clampedStage = max(0, min(stage, STAGE_COUNT - 1));
+    unsigned long blinkInterval = STAGE_BLINK_MS[clampedStage];
+    if (nowMs - lastLedBlinkMs >= blinkInterval) {
+      ledBlinkState = !ledBlinkState;
+      lastLedBlinkMs = nowMs;
+    }
+    ledOn = ledBlinkState;
+  } else if (nowMs < speedIndicatorUntilMs) {
+    ledOn = true;
+  } else {
+    ledBlinkState = LOW;
+  }
   digitalWrite(LED_BUILTIN, ledOn ? HIGH : LOW);
 
   unsigned long nowMicros = micros();
@@ -288,4 +322,5 @@ void loop() {
       stepMotorNonBlocking(currentDirection, nowMicros);
     }
   }
+  // else: LED handled above
 }
