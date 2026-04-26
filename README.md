@@ -73,6 +73,24 @@ arduino-cli compile --fqbn arduino:avr:nano --library '/Users/micahbreitenstein/
 arduino-cli upload -v -p /dev/cu.usbserial-BG02A9YU --fqbn arduino:avr:nano '/Users/micahbreitenstein/Downloads/to Micah/MOCO-stepper/examples/Swing'
 ```
 
+## Debugging
+
+To monitor Nano behavior via serial, enable `AXIS_SERIAL_DEBUG` in the sketch and connect with a terminal at 57600 baud.
+
+**Find your Nano port:**
+```sh
+ls /dev/cu.*
+```
+
+**Connect via screen:**
+```sh
+screen /dev/cu.usbserial-XXXX 57600
+```
+
+Replace `XXXX` with your Nano's serial ID. You will see debug messages (MOTION START, STAGE changes, etc.) and motion-activity telemetry.
+
+**Exit screen:** Press `Ctrl+A`, then `K`, then `Y` to confirm.
+
 ## How It Works
 
 Each example sketch defines axis-specific config constants then `#include`s the shared core:
