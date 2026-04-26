@@ -36,6 +36,19 @@ The "Fine Adj Pins" column only refers to optional local Nano fine-adjust inputs
 | 11 | Fine speed adjust up *(Pan, Tilt only)* |
 | 12 | Fine speed adjust down *(Pan, Tilt only)* |
 
+### Mega-to-Nano Signal Mapping
+
+The Mega sends motor control signals to each Nano on dedicated pins. Example for Swing axis:
+
+| Mega Pin | Nano Pin | Function |
+|----------|----------|----------|
+| 24 | 7 | Swing Up (jib positive direction) |
+| 25 | 6 | Swing Down (jib negative direction) |
+| 26 | 8 | Speed Stage Up (increase motor speed) |
+| 27 | 9 | Speed Stage Down (decrease motor speed) |
+
+Each axis has its own Nano with this pin mapping. Check `MOCO-control/MEGA__master/MEGA__master.ino` for the exact pin assignments per axis.
+
 ## Flashing a Nano
 
 Each physical Nano gets flashed once with its axis sketch. Repeat these steps for each axis.
