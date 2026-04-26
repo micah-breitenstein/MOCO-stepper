@@ -33,21 +33,31 @@ Each axis runs on its own Arduino Nano. All axes share a single core implementat
 | 11 | Fine speed adjust up *(Pan, Tilt only)* |
 | 12 | Fine speed adjust down *(Pan, Tilt only)* |
 
-## Installation
+## Flashing a Nano
 
-**Arduino IDE:**
-1. Sketch → Include Library → Add .ZIP Library (or clone into your Arduino `libraries/` folder)
-2. File → Examples → MOCO-Stepper → select your axis
-3. Select board: Arduino Nano, port: your USB port
-4. Upload
+Each physical Nano gets flashed once with its axis sketch. Repeat these steps for each axis.
 
-**arduino-cli:**
+**Step 1 — Install the library**
+Clone this repo into your Arduino `libraries/` folder, or add it via Sketch → Include Library → Add .ZIP Library.
+
+**Step 2 — Open the axis sketch**
+Arduino IDE: File → Examples → MOCO-Stepper → select your axis (e.g. `Swing`)
+
+**Step 3 — Select board and port**
+- Board: Arduino Nano
+- Processor: ATmega328P
+- Port: the USB port your Nano is connected to
+
+**Step 4 — Upload**
+Click Upload (→). The Nano is now flashed and ready for that axis.
+
+**arduino-cli equivalent:**
 ```sh
 arduino-cli compile --fqbn arduino:avr:nano --library /path/to/MOCO-stepper examples/Swing
-arduino-cli upload -p /dev/cu.usbmodemXXXX --fqbn arduino:avr:nano examples/Swing
+arduino-cli upload -p /dev/cu.usbmodemXXXX --fqbn arduino:avr:nano --library /path/to/MOCO-stepper examples/Swing
 ```
 
-Repeat for each axis Nano, selecting the matching example sketch.
+Replace `Swing` with the axis name and `/dev/cu.usbmodemXXXX` with your port.
 
 ## How It Works
 
